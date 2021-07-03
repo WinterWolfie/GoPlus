@@ -1,4 +1,4 @@
-package GoPlus
+package main
 
 import (
 	"fmt"
@@ -61,7 +61,6 @@ func (b *Broker) Unsubscribe(msgCh chan interface{}) {
 func (b *Broker) Publish(msg interface{}) {
 	b.publishCh <- msg
 }
-
 
 func example() {
 	// Create and start a broker:

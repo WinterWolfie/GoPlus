@@ -1,4 +1,4 @@
-package GoPlus
+package main
 
 import (
 	"math"
@@ -12,14 +12,14 @@ func RoundPlus(n float64, decimals int) float64 {
 
 func GenerateRandomFloat(min, max float64) float64 {
 	rand.Seed(time.Now().UnixNano())
-	random := min + rand.Float64() * (max - min)
+	random := min + rand.Float64()*(max-min)
 
 	return random
 }
 
 func GenerateRandomInt(min, max int) int {
 	rand.Seed(time.Now().UnixNano())
-	random := rand.Intn(max - min + 1) + min
+	random := rand.Intn(max-min+1) + min
 
 	return random
 }
