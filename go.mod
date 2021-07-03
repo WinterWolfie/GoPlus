@@ -1,3 +1,3 @@
-module github.com/WinterWolfie/GoPlus
+module github.com/WinterWolfie/GoPlus/v1
 
 go 1.16
