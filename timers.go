@@ -17,3 +17,18 @@ func GlobalClock(minuteTicker *Broker) {
 		}
 	}()
 }
+
+func (broker *Broker) GlobalClock() {
+	go broker.Start()
+	go func() {
+		for {
+			if time.Now().Unix()%60 == 0 {
+				for {
+					//fmt.Println("GlobalClock(): tick")
+					broker.Publish(struct{}{})
+					time.Sleep(time.Minute)
+				}
+			}
+		}
+	}()
+}

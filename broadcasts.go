@@ -21,17 +21,17 @@ func NewBroadcast() *Broker {
 	}
 }
 
-func (b *Broker) Start() {
+func (broker *Broker) Start() {
 	subs := map[chan interface{}]struct{}{}
 	for {
 		select {
-		case <-b.stopCh:
+		case <-broker.stopCh:
 			return
-		case msgCh := <-b.subCh:
+		case msgCh := <-broker.subCh:
 			subs[msgCh] = struct{}{}
-		case msgCh := <-b.unsubCh:
+		case msgCh := <-broker.unsubCh:
 			delete(subs, msgCh)
-		case msg := <-b.publishCh:
+		case msg := <-broker.publishCh:
 			for msgCh := range subs {
 				// msgCh is buffered, use non-blocking send to protect the broker:
 				select {
@@ -43,23 +43,23 @@ func (b *Broker) Start() {
 	}
 }
 
-func (b *Broker) Stop() {
-	close(b.stopCh)
+func (broker *Broker) Stop() {
+	close(broker.stopCh)
 }
 
-func (b *Broker) Subscribe() chan interface{} {
+func (broker *Broker) Subscribe() chan interface{} {
 
 	msgCh := make(chan interface{}, 10)
-	b.subCh <- msgCh
+	broker.subCh <- msgCh
 	return msgCh
 }
 
-func (b *Broker) Unsubscribe(msgCh chan interface{}) {
-	b.unsubCh <- msgCh
+func (broker *Broker) Unsubscribe(msgCh chan interface{}) {
+	broker.unsubCh <- msgCh
 }
 
-func (b *Broker) Publish(msg interface{}) {
-	b.publishCh <- msg
+func (broker *Broker) Publish(msg interface{}) {
+	broker.publishCh <- msg
 }
 
 func example() {
